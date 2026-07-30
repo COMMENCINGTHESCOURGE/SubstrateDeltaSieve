@@ -1,89 +1,88 @@
 import math
-from typing import Dict, Tuple, List, Union
+from typing import Dict, Tuple, List, Union, Any
 
 class SubstrateDeltaSieve:
     '''
-    Operator Voice - Patch xiii: Multi-Metric Evaluation
-    Match the delta type (Angular, Statistical, Symbolic) to the coordinate system.
-    This acts as the Layer 1 filtering mechanism for processing external backend data.
-    
-    UPGRADED PROTOCOL: Integrating Omega Solver, Mycelium Topology, and Sovereign Compute.
+    Multi-Metric Field-Delta Evaluator
+    Harmonizes legacy documentation contracts with FracType/Mod-9 Vinculum Governance.
     '''
     def __init__(self):
         self.metrics = {
-            'angular': self._evaluate_angular_stealth,
-            'statistical': self._evaluate_statistical_mycelium,
-            'symbolic': self._evaluate_symbolic_fractype
+            'angular': self._evaluate_angular,
+            'statistical': self._evaluate_statistical,
+            'symbolic': self._evaluate_symbolic
         }
 
-    def _evaluate_angular_stealth(self, thermal_vector: Tuple[float, float, float], em_baseline: Tuple[float, float, float]) -> float:
+    def _evaluate_angular(self, *args) -> float:
         """
-        Hardware Delta (Video 3): Sovereign Compute Node.
-        Measures Stealth Kinematics (Patch xxi) footprint. Zero EM interference & thermal balancing.
-        Returns the acoustic/EM footprint deviation. 1.0 = perfect stealth.
+        Handles both thermal/EM vectors and standard tuple dot products.
+        Returns cosine similarity / stealth rating in [-1.0, 1.0].
         """
-        dot = sum(a * b for a, b in zip(thermal_vector, em_baseline))
-        mag_a = math.sqrt(sum(a * a for a in thermal_vector))
-        mag_b = math.sqrt(sum(b * b for b in em_baseline))
+        if len(args) == 2:
+            vec_a, vec_b = args[0], args[1]
+        else:
+            raise ValueError("Angular evaluation requires 2 vector inputs.")
+            
+        dot = sum(a * b for a, b in zip(vec_a, vec_b))
+        mag_a = math.sqrt(sum(a * a for a in vec_a))
+        mag_b = math.sqrt(sum(b * b for b in vec_b))
         if mag_a == 0 or mag_b == 0:
             return 0.0
-        stealth_factor = dot / (mag_a * mag_b)
-        return stealth_factor
+        return dot / (mag_a * mag_b)
 
-    def _evaluate_statistical_mycelium(self, solution_nodes: List[int], common_ancestor: int) -> float:
+    def _evaluate_statistical(self, *args) -> float:
         """
-        Structural Delta (Video 2): Mycelium Node Graph.
-        Calculates torsion clustering. Identifies redundant solution branches and returns compression ratio.
+        Polymorphic statistical evaluator:
+        - If passed (solution_nodes: List[int], common_ancestor: int): returns Mycelium compression ratio.
+        - If passed (data_list: List[float], target: float): returns population variance float.
         """
-        if not solution_nodes:
-            return 0.0
-        # The true count is the number of distinct multiplier paths from the root
-        unique_roots = set(node // common_ancestor for node in solution_nodes if node % common_ancestor == 0)
-        apparent_count = len(solution_nodes)
-        true_count = len(unique_roots) if unique_roots else 1
-        compression_ratio = apparent_count / true_count
-        return compression_ratio
+        if len(args) == 2 and isinstance(args[0], list):
+            data, param = args[0], args[1]
+            if all(isinstance(x, int) for x in data) and isinstance(param, int):
+                if not data or param == 0:
+                    return 0.0
+                unique_roots = set(node // param for node in data if node % param == 0)
+                apparent_count = len(data)
+                true_count = len(unique_roots) if unique_roots else 1
+                return apparent_count / true_count
+            else:
+                mean = sum(data) / len(data) if data else 0.0
+                variance = sum((x - mean) ** 2 for x in data) / len(data) if data else 0.0
+                return float(variance)
+        raise ValueError("Invalid parameters for statistical evaluation.")
 
-    def _evaluate_symbolic_fractype(self, base_class: int, omega_multiplier: int, apparent_state: str, hidden_state: str) -> bool:
+    def _evaluate_symbolic(self, *args) -> bool:
         """
-        Symbolic Delta (Video 1): FracType Steganography.
-        Validates the Omega Solver output against the base mod9 class.
-        Returns True if the vinculum container is mathematically stable.
+        Polymorphic symbolic evaluator:
+        - Ontology Mode: process_delta('symbolic', node_name, ontology_list) -> bool
+        - FracType Mode: process_delta('symbolic', base_class, omega_mult, apparent, hidden) -> bool
         """
-        # Patch xiii: Multiplier x3 applied to any class yields {0,3,6} (BREACH).
-        # We test the intent:
-        resulting_state = (base_class * omega_multiplier) % 9
-        
-        # Universal Correction Rule check
-        if (resulting_state * 3) % 9 in {0, 3, 6} and omega_multiplier == 3:
-            return False  # Structural Breach Detected (x3 multiplier destroys node)
-        
-        if not apparent_state or not hidden_state:
+        if len(args) == 2 and isinstance(args[0], str) and isinstance(args[1], list):
+            node, ontology = args[0], args[1]
+            return node in ontology
+        elif len(args) >= 2 and isinstance(args[0], int) and isinstance(args[1], int):
+            base_class, omega_multiplier = args[0], args[1]
+            resulting_state = (base_class * omega_multiplier) % 9
+            if (resulting_state * 3) % 9 in {0, 3, 6} and omega_multiplier == 3:
+                return False
+            return True
+        else:
             return False
-            
-        return True
 
-    def process_delta(self, delta_type: str, *args) -> any:
+    def process_delta(self, delta_type: str, *args) -> Any:
         if delta_type not in self.metrics:
-            raise ValueError(f"Delta type {delta_type} not supported by the Sieve.")
+            raise ValueError(f"Delta type '{delta_type}' not supported.")
         return self.metrics[delta_type](*args)
 
+
 if __name__ == "__main__":
-    print("=== SUBSTRATE DELTA SIEVE: ONLINE ===")
     sieve = SubstrateDeltaSieve()
     
-    # 1. Angular/Hardware: Sovereign Compute Stealth Check
-    stealth_rating = sieve.process_delta('angular', (0.01, 1.0, 0.01), (0.0, 1.0, 0.0))
-    print(f"[SOVEREIGN_NODE] Stealth Kinematics Rating: {stealth_rating:.4f} (1.0 = Perfect EM Balance)")
+    # Legacy / README usage
+    print("Angular Similarity:", sieve.process_delta('angular', (1.0, 0.0, 0.0), (0.9, 0.1, 0.0)))
+    print("Statistical Variance:", sieve.process_delta('statistical', [0.8, 0.9, 0.7, 0.85], 0.5))
+    print("Symbolic Ontology Match:", sieve.process_delta('symbolic', 'GlassToWallRatio', ['GlassToWallRatio', 'Pangea Principle']))
     
-    # 2. Statistical/Structural: Mycelium Compression
-    # Five nodes, but 4 and 5 are unique branches, 1,2,3 are same
-    nodes = [32000000, 32000000, 32000000, 32000000*4, 32000000*5]
-    comp_ratio = sieve.process_delta('statistical', nodes, 32000000)
-    print(f"[MYCELIUM_GRAPH] Structural Compression Ratio: {comp_ratio:.2f}x")
-    
-    # 3. Symbolic/Math: FracType Stability
-    stable_frac = sieve.process_delta('symbolic', 2, 2, "Public_UI_Layer", "Hidden_Torsion_State") # Base ORANGE, mult x2
-    breach_frac = sieve.process_delta('symbolic', 2, 3, "Public_UI_Layer", "Hidden_Torsion_State") # Base ORANGE, mult x3
-    print(f"[FRACTYPE_MATH] Multiplier x2 Stability: {'STABLE' if stable_frac else 'BREACH'}")
-    print(f"[FRACTYPE_MATH] Multiplier x3 Stability: {'STABLE' if breach_frac else 'BREACH'}")
+    # Advanced FracType / Mycelium usage
+    print("Mycelium Compression:", sieve.process_delta('statistical', [32000000, 32000000, 128000000], 32000000))
+    print("FracType x3 Breach Detection:", sieve.process_delta('symbolic', 2, 3, "Public_UI", "Hidden_Torsion"))
